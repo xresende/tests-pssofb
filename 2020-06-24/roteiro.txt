@@ -1,0 +1,9 @@
+2020-06-24:
+
+- repetir testes no lnls451-linux sem a interface TIC.
+- desabilitar NFS.
+- teste com uma beagle só. ver se periodo >100ms bate com 20s...
+- repetir teste no computador do murilo.
+- versão pyepics==3.4.2 e ==3.3.0
+- não usar o PYEPICS_LIBCA
+- desabilitar hyperthreading no lnls454 e repetir testes

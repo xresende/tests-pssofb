@@ -1,0 +1,9 @@
+2020-06-25:
+
+- repetir testes com serviços na beagle desabilitados
+- repetir teste com apenas uma beagle
+- testar uso com IOCs e serviços na beagle off.
+
+- testar multiprocessing.
+- testar no lnls350-linux.
+- usar asyncio, caproto.
