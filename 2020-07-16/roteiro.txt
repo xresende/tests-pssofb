@@ -1,4 +1,4 @@
+- testar "bugfix" do branch "same-threads" do PSSOFB.
 - testar script de benchmark com IOCs ligados no modo SOFBMode
 - testar versão em C da biblioteca eth-bridge (patrícia)
 - testar branch do eth-bridge derivado do master filtrando o log. (patrícia)
-- testar "bugfix" do branch "same-threads" do PSSOFB.
