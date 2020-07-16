@@ -1,0 +1,51 @@
+=== Tempos set-then-update: 35.5 +/- 4.8 (171.0) o de sempre
+=== Tempos só de setpoint:  17.7 +/- 5.5 (96.7) ms
+=== Tempos só de setpoint mas com sleep de 100 ms não contabilizados!:  101.2 +/- 7.2 (107.9) ms
+
+=== Teste com delays entre setpoint e trigger, trigger e readout.
+
+
+delay_before    delay_after     #Mon<>SP
+
+0               50                  140/150
+0               100	            17/150
+0               120	            14/150
+0               150	            4/150
+0               200	            0/150
+
+100             100	            18/150
+
+
+Uma iteração:
+
+	    # calc new kick
+        kick_sp = kick_refmon + 1 * 0.01 * _np.random.randn(len(kick_refmon))
+
+        # start clock
+        time0 = _time.time()
+
+        # set kick values
+        curr_sp = pssofb.bsmp_sofb_kick_set(kick_sp)
+
+        # sleep for a while
+        _time.sleep(delay_before)
+
+        # send trigger
+        trigger.value = 1
+
+        # stop clock
+        time1 = _time.time()
+        exectimes[i] = 1000*(time1 - time0)
+
+        # make sure trigger signal gets to power supplies.
+        _time.sleep(delay_after)
+
+        # read from power supplies
+        pssofb.bsmp_sofb_update()
+        curr_rb = pssofb.sofb_current_refmon
+
+        # comparison
+        issame = pssofb.sofb_vector_issame(curr_sp, curr_rb)
+
+        if not issame:
+            print('SP<>RB in event {}'.format(i))

@@ -1,0 +1,16 @@
+testes set
+
+1. pru-serial485:originala        eth-pru-serial485:v2.5.0
+2. deploy do pru-serial485:54b3ca eth-pru-serial485:v2.5.0
+3. deploy do pru-serial485:v1.4.0 eth-pru-serial485:v2.5.0
+4. deploy do pru-serial485:v1.5.0 eth-pru-serial485:v2.5.0
+5. deploy do pru-serial485:v1.5.0 eth-pru-serial485:test-v2.5.0-write-then-read
+	vários eventos ">100ms" de novo!
+6. deploy do pru-serial485:v1.5.0 eth-pru-serial485:v2.5.0 (back)
+7. deploy do pru-serial485:v1.5.0 eth-pru-serial485:v2.5.0 siriuspy:same-threads
+    tempos estranhos. quando rodei benchmark_bsmp_sofb_current_setpoint vários erros de comparação. o mesmo não acontece na versão original.
+8. deploy do pru-serial485:v1.5.0 eth-pru-serial485:master (teste log)
+
+deixei as beagles em pru-serial485:v1.5.0 eth-pru-serial485:v2.5.0
+
+ 

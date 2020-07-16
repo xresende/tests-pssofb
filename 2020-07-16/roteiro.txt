@@ -1,0 +1,3 @@
+- testar script de benchmark com IOCs ligados no modo SOFBMode
+- testar versão em C da biblioteca eth-bridge (patrícia)
+- testar branch do eth-bridge derivado do master filtrando o log. (patrícia)

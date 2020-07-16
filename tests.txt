@@ -1,0 +1,37 @@
+lnls561-linux: 10.0.38.51, 10.128.254.233
+
+2020-06-23:
+
+- repetir teste sem os serviços de monitoramento nas beagles
+	. mesmo resultado
+- testar script atual mas usando sleep/dummyrun ao invés de comm com as fontes.
+	. os eventos >100ms desapareceram.
+	. testes com sleep de 20 ms: (avg, rms) = (31.7, 0.5) ms
+	. testes com loop intensivo ~40 ms: (avg, rms) = (47.2, 2.7) ms
+- testar o script usando N/2 de beagles.
+	. tempo médio menor que a metade do original.
+	. eventos de tempos maiores continuaram acontecendo
+- rodar o script no lnls454 (sem o roteador)
+	. resultado parecido com o do lnlsfac-srv1, sem eventos >100ms mas com tempo médio bem acima
+- rodar o lnls561 no ponto de rede sirius-opi1
+	. resultado igual ao do lnls451-linux sob o roteador.
+
+2020-06-24:
+
+- repetir testes no lnls451-linux sem a interface TIC.
+- desabilitar NFS.
+- teste com uma beagle só. ver se periodo >100ms bate com 20s...
+- repetir teste no computador do murilo.
+- versão pyepics==3.4.2 e ==3.3.0
+- não usar o PYEPICS_LIBCA
+- desabilitar hyperthreading no lnls454 e repetir testes
+
+2020-06-25:
+
+- repetir testes com serviços na beagle desabilitados
+- repetir teste com apenas uma beagle
+- testar uso com IOCs e serviços na beagle off.
+
+- testar multiprocessing.
+- testar no lnls350-linux.
+- usar asyncio, caproto.

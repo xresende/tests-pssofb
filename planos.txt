@@ -1,0 +1,6 @@
+num prazo de, chuto, 2 semanas:
+
+após o novo firmware do gabriel, temos que o tempo de um setpoint-leitura estará em: ~ 19 ms.
+com a mudança da patrícia, usando a comunicação wite-then-read, o tempo cai ~30%:    ~ 13.3 ms
+posso otimizar cada comunicação do cliente PSSOFB, deixando de usar as mesmas classes que o IOC e enviando os bytestreams pelo socket. reduzindo ~ 2ms: 12 ms
+

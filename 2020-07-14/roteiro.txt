@@ -1,0 +1,11 @@
+- pru-serial485: como estava (54b3ca94fb861cbf3e9d03263e395242ce9c3f52 na IA-01RaCtrl--CO-PSCtrl-SI2)
+- eth-pru-serial485: v2.5.0
+- siriuspy: master (novo firmware FBP)
+- ms code connectado!
+
+
+1. set-then-read
+
+2. set
+
+mesmos tempos, aproximadamente. mas os eventos >100ms diminuiram!

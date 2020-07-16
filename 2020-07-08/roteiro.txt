@@ -1,0 +1,74 @@
+2020-07-08
+==========
+
+a) O script de medida de performance usado neste teste foi rodado no lnls561-linux (10.0.38.51)
+   obs:
+       - não havia nenhum processo consumindo CPU, memória, ou rede, fora do "normal".
+       - neste computador roda: cliente de tempo, cliente NFS e sshd
+       - há duas interfaces virtuais de rede
+       - o computador está sob um switch na mesa do murilo.
+b) Testei apenas a função 'set-then-update' do script, que faz um ajuste em kick de todas corretoras e
+depois as lê, comparando a leitura com o ajuste, indicando se houve discrepâncias.
+
+
+Roteiro seguido:
+---------------
+
+1. verificar se comportamento estranho persiste:
+
+- abaixei os IOCs
+- rodei novamente o teste set-then-update
+
+  RESULTADO: 
+	o problema persiste.
+	tentei também: 1) kick_refmon = pssofb.sofb_kick_refmom.copy() - sem efeito
+                       2) usar fontes no modo SlowRefSync. - sem efeito
+		       3) rebootar o lnls561-linux - o número de eventos ">100ms" diminuiu!
+	
+2. teste com versão 'v2.5.0':
+
+- fiz deploy pelo ansible: make deploy-beagles-si-correctors
+  RESULTADO: ao fazer deploy todas os tasks nas beagles voltaram verde, com exceção da
+             IA-03RaCtrl--CO-PSCtrl-SI2, que voltou amarela! não entendi...
+             percebi que o deploy foi feito com configuração de teste, instalando em /tmp.
+             corrigido problema com playbook do ansible, o deploy funcionou.
+- parei serviços: service-ethbridge-si-correctors-stop
+- iniciei serviços: service-ethbridge-si-correctors-start
+
+  RESULTADO: !!! os tempos voltaram ao normal !!!
+             tempo 5000 eventos: 36.1 +/- 9.1 todos em (32.5, 191.4) ms
+
+3. criei um branch no etherbridge a partir do v.2.5.0 mas incorporando o write_then_read
+   "test-v2.5.0-with-write-then-read"
+
+4. testar test-v2.5.0-with-write-then-read:
+
+	- alterar ansible para usar novo branch do eth-bridge
+	- fazer deploy pelo ansible: make deploy-beagles-si-correctors
+	- parar serviços: service-ethbridge-si-correctors-stop
+	- iniciar serviços: service-ethbridge-si-correctors-start
+
+   RESULTADO: aparecem eventos >100ms nas primeiras 3000 interações.
+	      tempo 5000 eventos: 31.3 +/- 19.8 in (23.6, 139.5) ms
+              tempo 4685: 26.3 +/- 1.5 todos em (23.6, 47.5) ms (com cutoff de 50 ms)
+
+5. testar test-v2.5.0-with-write-then-read, mas enviando write e read separados
+
+   RESULTADO: tempos normais como em v2.5.0,
+              tempo 5000 eventos: 35.4 +/- 5.8 todos em (32.2, 191.6) ms
+
+6. testar test-v2.5.0-with-write-then-read desprezando primeiros 3000 pontos
+
+   RESULTADO: mostrou que foi só coincidência não ter >100ms depois de 3000 pontos.
+
+7. pequenas otimizações do v2.5.0
+   commit: https://github.com/lnls-sirius/eth-bridge-pru-serial485/commit/8b28086a2a9d3897ce06ac4df79f486a941d35f2
+   não funcionou! o script travava na primeira interação com o eth-bridge.
+   reverti as otimizações feitas no branch.
+   
+8. fiz deploy da versão test-v2.5.0-with-write-then-read do EthBridge (sem otimizações que falharam)
+
+9. testei se os tempos voltaram sem eventos > 100ms. ok.
+
+10. fim dos testes: levantei IOCs das corretoras para operação.
+
