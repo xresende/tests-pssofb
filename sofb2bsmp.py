@@ -150,7 +150,7 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
         time1 = _time.time()
         exectimes[i] = 1000*(time1 - time0)
 
-        _time.sleep(0.005)
+        # _time.sleep(0.005)
         # event.wait(0.005)
 
         # compare readback_ref read with previous value set
@@ -509,7 +509,7 @@ def plot_results(fname, title):
 
 def run():
     """."""
-    fname = 'lnlsfac-srv1-set-same-threads-mproc8-cserver-write-then-read-ethclient-remove-threads-sleep5ms-50mil.txt'
+    fname = 'lnlsfac-srv1-set-same-threads-mproc8-cserver-write-then-read-ethclient-remove-threads-50mil.txt'
     # benchmark_bsmp_sofb_current_update()
     # benchmark_bsmp_sofb_current_setpoint(fname)
     benchmark_bsmp_sofb_current_setpoint_mp(fname)
