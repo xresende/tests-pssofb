@@ -1,6 +1,7 @@
 #!/usr/bin/env python-sirius
 """."""
 
+import os as _os
 import sys as _sys
 import time as _time
 from multiprocessing import Pipe
@@ -21,7 +22,20 @@ from siriuspy.pwrsupply.pssofb import PSSOFB
 
 rcParams.update({
     'font.size': 14, 'lines.linewidth': 2, 'axes.grid': True})
-NRPTS = 25000
+NRPTS = 10000
+
+
+def define_priority():
+    """."""
+    # sched = _os.SCHED_FIFO
+    sched = _os.SCHED_RR
+    prio = _os.sched_get_priority_max(sched)
+    param = _os.sched_param(prio)
+    try:
+        _os.sched_setscheduler(0, sched, param)
+        print('High priority set!')
+    except PermissionError:
+        print('Could not set priority')
 
 
 def benchmark_bsmp_sofb_current_update():
@@ -133,7 +147,7 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
         time1 = _time.time()
         exectimes[i] = 1000*(time1 - time0)
 
-        #_time.sleep(0.005)
+        _time.sleep(0.005)
 
         # compare readback_ref read with previous value set
         if curr_sp_prev is not None:
@@ -491,7 +505,7 @@ def plot_results(fname, title):
 
 def run():
     """."""
-    fname = 'lnls561-linux-set-same-threads-mproc8-cserver-write-then-read-25mil.txt'
+    fname = 'lnls561-linux-set-same-threads-mproc8-cserver-write-then-read-ethclient-remove-threads-sleep5ms-10mil.txt'
     # benchmark_bsmp_sofb_current_update()
     # benchmark_bsmp_sofb_current_setpoint(fname)
     benchmark_bsmp_sofb_current_setpoint_mp(fname)
@@ -509,4 +523,5 @@ def run():
 
 
 if __name__ == '__main__':
+    # define_priority()
     run()

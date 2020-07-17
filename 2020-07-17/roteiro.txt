@@ -1,4 +1,9 @@
-- testar instalação do pru-serial484 pelo makefile (pronto?)
+- python-eth/c-eth: ~igual a freq dos desvios. observamos patamar no caso do python.
+- priority: sem efeito. com e sem sleep. (com c-eth)
+-
+
 - testar script com set_priority!
 - rodar o script em outros hosts
 - testar PV SOFBMode-Sel
+
+- testar instalação do pru-serial485 pelo makefile (postergado)
