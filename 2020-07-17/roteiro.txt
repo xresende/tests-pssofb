@@ -1,9 +1,13 @@
 - python-eth/c-eth: ~igual a freq dos desvios. observamos patamar no caso do python.
-- priority: sem efeito. com e sem sleep. (com c-eth)
-- priority_FIFO: sem efeito. com e sem sleep. (com c-eth)
+- process priority_RR:
+    sem efeito, com ou sem sleep. (com c-eth)
+- priority_FIFO:
+    sem efeito, com ou sem sleep. (com c-eth)
 
-- rodar o script em outros hosts
-    lnlsfac-srv1
+- rodar o script em outros hosts (lnlsfac-srv1)
+  testes:
+    set same-threads-mproc8 cserver write-then-read ethclient-remove-threads sleep5ms 50mil
+    set same-threads-mproc8 cserver write-then-read ethclient-remove-threads 50mil
 
 - testar PV SOFBMode-Sel
 
