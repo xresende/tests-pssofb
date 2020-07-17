@@ -1,3 +1,4 @@
 - testar instalação do pru-serial484 pelo makefile (pronto?)
 - testar script com set_priority!
 - rodar o script em outros hosts
+- testar PV SOFBMode-Sel
