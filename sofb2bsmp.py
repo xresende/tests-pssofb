@@ -106,7 +106,7 @@ def _run_subprocess_pssofb(pipe, bbbnames):
 
 def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
     """."""
-    event = Event()
+    # event = Event()
     bbbnames = _dcopy(PSSOFB.BBBNAMES)
     pipes = list()
     procs = list()
@@ -150,8 +150,8 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
         time1 = _time.time()
         exectimes[i] = 1000*(time1 - time0)
 
-        # _time.sleep(0.005)
-        event.wait(0.005)
+        _time.sleep(0.005)
+        # event.wait(0.005)
 
         # compare readback_ref read with previous value set
         if curr_sp_prev is not None:
@@ -509,7 +509,7 @@ def plot_results(fname, title):
 
 def run():
     """."""
-    fname = 'lnls561-linux-set-same-threads-mproc8-cserver-write-then-read-ethclient-remove-threads-eventwait5ms-10mil.txt'
+    fname = 'lnls561-linux-set-same-threads-mproc8-cserver-write-then-read-ethclient-remove-threads-sleep5ms-10mil.txt'
     # benchmark_bsmp_sofb_current_update()
     # benchmark_bsmp_sofb_current_setpoint(fname)
     benchmark_bsmp_sofb_current_setpoint_mp(fname)
