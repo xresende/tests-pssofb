@@ -24,7 +24,7 @@ from siriuspy.pwrsupply.pssofb import PSSOFB
 
 rcParams.update({
     'font.size': 14, 'lines.linewidth': 2, 'axes.grid': True})
-NRPTS = 15000
+NRPTS = 50000
 
 
 def define_priority():
@@ -512,7 +512,7 @@ def plot_results(fname, title):
 
 def run():
     """."""
-    fname = 'test.txt'
+    fname = 'lnlsfac-srv1-set-same-threads-mproc8-pythonserver-write-then-read-ethclient-remove-threads-sleep5ms-iocoff-50mil.txt'
     # benchmark_bsmp_sofb_current_update()
     # benchmark_bsmp_sofb_current_setpoint(fname)
     benchmark_bsmp_sofb_current_setpoint_mp(fname)
@@ -526,7 +526,7 @@ def run():
     # benchmark_bsmp_sofb_kick_setpoint_delay(
     #     sleep_trigger_before, sleep_trigger_after)
     # test_methods()
-    # plot_results(fname, fname.split('.')[0])
+    plot_results(fname, fname.split('.')[0])
 
 
 if __name__ == '__main__':

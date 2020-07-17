@@ -14,7 +14,7 @@
 
 - verificar erro da fonte quando taxa de setpoint é reduzida (aumentando sleep)
     parece não depender da taxa
-    olhamos os índices das corretoras
+    olhamos os índices das corretoras cuja comparação apresentava discrepâncias.
 
 - testar PV SOFBMode-Sel
 
