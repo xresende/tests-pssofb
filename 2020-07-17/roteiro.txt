@@ -1,9 +1,10 @@
 - python-eth/c-eth: ~igual a freq dos desvios. observamos patamar no caso do python.
 - priority: sem efeito. com e sem sleep. (com c-eth)
--
+- priority_FIFO: sem efeito. com e sem sleep. (com c-eth)
 
-- testar script com set_priority!
 - rodar o script em outros hosts
+    lnlsfac-srv1
+
 - testar PV SOFBMode-Sel
 
 - testar instalação do pru-serial485 pelo makefile (postergado)
