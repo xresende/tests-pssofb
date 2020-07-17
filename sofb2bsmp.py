@@ -21,7 +21,7 @@ from siriuspy.pwrsupply.pssofb import PSSOFB
 
 rcParams.update({
     'font.size': 14, 'lines.linewidth': 2, 'axes.grid': True})
-NRPTS = 50000
+NRPTS = 25000
 
 
 def benchmark_bsmp_sofb_current_update():
@@ -491,7 +491,7 @@ def plot_results(fname, title):
 
 def run():
     """."""
-    fname = 'lnls561-linux-set-same-threads-mproc8-cserver-write-then-read-50mil.txt'
+    fname = 'lnls561-linux-set-same-threads-mproc8-cserver-write-then-read-25mil.txt'
     # benchmark_bsmp_sofb_current_update()
     # benchmark_bsmp_sofb_current_setpoint(fname)
     benchmark_bsmp_sofb_current_setpoint_mp(fname)
