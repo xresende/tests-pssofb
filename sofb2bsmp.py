@@ -24,7 +24,7 @@ from siriuspy.pwrsupply.pssofb import PSSOFB
 
 rcParams.update({
     'font.size': 14, 'lines.linewidth': 2, 'axes.grid': True})
-NRPTS = 50000
+NRPTS = 15000
 
 
 def define_priority():
@@ -150,12 +150,13 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
         time1 = _time.time()
         exectimes[i] = 1000*(time1 - time0)
 
-        # _time.sleep(0.005)
+        _time.sleep(0.005)
         # event.wait(0.005)
 
         # compare readback_ref read with previous value set
         if curr_sp_prev is not None:
             issame = PSSOFB.sofb_vector_issame(curr_read, curr_sp_prev)
+            diff = curr_read - curr_sp_prev
         else:
             issame = True
 
@@ -163,7 +164,9 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
         curr_sp_prev = curr_sp
 
         if not issame:
-            print('SP<>RB in event {}'.format(i))
+            sel = (~_np.isclose(diff, 0, atol=1e-4)).nonzero()[0]
+            print('SP<>RB in event {} {}'.format(i, sel))
+
 
     for pipe in pipes:
         pipe.send(None)
@@ -509,7 +512,7 @@ def plot_results(fname, title):
 
 def run():
     """."""
-    fname = 'lnlsfac-srv1-set-same-threads-mproc8-pythonserver-write-then-read-ethclient-remove-threads-50mil.txt'
+    fname = 'test.txt'
     # benchmark_bsmp_sofb_current_update()
     # benchmark_bsmp_sofb_current_setpoint(fname)
     benchmark_bsmp_sofb_current_setpoint_mp(fname)
@@ -523,7 +526,7 @@ def run():
     # benchmark_bsmp_sofb_kick_setpoint_delay(
     #     sleep_trigger_before, sleep_trigger_after)
     # test_methods()
-    plot_results(fname, fname.split('.')[0])
+    # plot_results(fname, fname.split('.')[0])
 
 
 if __name__ == '__main__':

@@ -1,0 +1,184 @@
+BEAGLEBONE:  IA-01RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.101.122
+BEAGLEBONE:  IA-02RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.102.122
+BEAGLEBONE:  IA-03RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.103.122
+BEAGLEBONE:  IA-04RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.104.122
+BEAGLEBONE:  IA-05RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.105.122
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+BEAGLEBONE:  IA-06RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.106.132
+BEAGLEBONE:  IA-07RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.107.132
+BEAGLEBONE:  IA-08RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.108.132
+BEAGLEBONE:  IA-09RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.109.132
+BEAGLEBONE:  IA-10RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.110.132
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+BEAGLEBONE:  IA-01RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.101.132
+BEAGLEBONE:  IA-02RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.102.132
+BEAGLEBONE:  IA-03RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.103.132
+BEAGLEBONE:  IA-04RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.104.132
+BEAGLEBONE:  IA-05RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.105.132
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+BEAGLEBONE:  IA-16RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.116.132
+BEAGLEBONE:  IA-17RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.117.132
+BEAGLEBONE:  IA-18RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.118.132
+BEAGLEBONE:  IA-19RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.119.132
+BEAGLEBONE:  IA-20RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.120.132
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+BEAGLEBONE:  IA-06RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.106.122
+BEAGLEBONE:  IA-07RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.107.122
+BEAGLEBONE:  IA-08RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.108.122
+BEAGLEBONE:  IA-09RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.109.122
+BEAGLEBONE:  IA-10RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.110.122
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+BEAGLEBONE:  IA-11RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.111.132
+BEAGLEBONE:  IA-12RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.112.132
+BEAGLEBONE:  IA-13RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.113.132
+BEAGLEBONE:  IA-14RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.114.132
+BEAGLEBONE:  IA-15RaCtrl:CO-PSCtrl-SI4
+IP_ADDRESS:  10.128.115.132
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+BEAGLEBONE:  IA-16RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.116.122
+BEAGLEBONE:  IA-17RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.117.122
+BEAGLEBONE:  IA-18RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.118.122
+BEAGLEBONE:  IA-19RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.119.122
+BEAGLEBONE:  IA-20RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.120.122
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+BEAGLEBONE:  IA-11RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.111.122
+BEAGLEBONE:  IA-12RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.112.122
+BEAGLEBONE:  IA-13RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.113.122
+BEAGLEBONE:  IA-14RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.114.122
+BEAGLEBONE:  IA-15RaCtrl:CO-PSCtrl-SI2
+IP_ADDRESS:  10.128.115.122
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+Anomalous bsmp communication in sofb_ps_setpoint_set:  83
+SP<>RB in event 87
+SP<>RB in event 125
+SP<>RB in event 147
+SP<>RB in event 200
+SP<>RB in event 224
+SP<>RB in event 291
+SP<>RB in event 812
+SP<>RB in event 962
+SP<>RB in event 1152
+SP<>RB in event 1162
+SP<>RB in event 1226
+SP<>RB in event 1440
+SP<>RB in event 1555
+SP<>RB in event 1683
+SP<>RB in event 1783
+SP<>RB in event 1801
+SP<>RB in event 1937
+SP<>RB in event 2015
+SP<>RB in event 2037
+SP<>RB in event 2105
+SP<>RB in event 2233
+SP<>RB in event 2250
+SP<>RB in event 2426
+SP<>RB in event 2451
+SP<>RB in event 2459
+SP<>RB in event 2487
+SP<>RB in event 2541
+SP<>RB in event 2580
+SP<>RB in event 2820
+SP<>RB in event 2922
+SP<>RB in event 3029
+SP<>RB in event 3070
+SP<>RB in event 3138
+SP<>RB in event 3258
+SP<>RB in event 3294
+SP<>RB in event 3398
+SP<>RB in event 3404
+SP<>RB in event 3529
+SP<>RB in event 3559
+SP<>RB in event 3662
+SP<>RB in event 3914
+SP<>RB in event 4213
+SP<>RB in event 4368
+SP<>RB in event 4505
+SP<>RB in event 4522
+SP<>RB in event 4638
+SP<>RB in event 4692
+SP<>RB in event 4740
+SP<>RB in event 4810
+SP<>RB in event 4853
+SP<>RB in event 4889
+SP<>RB in event 4931

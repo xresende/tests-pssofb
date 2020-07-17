@@ -9,6 +9,13 @@
     set same-threads-mproc8 cserver write-then-read ethclient-remove-threads sleep5ms 50mil
     set same-threads-mproc8 cserver write-then-read ethclient-remove-threads 50mil
 
+- rodar python-server no lnlsfac-srv1
+    média 4.4 ms
+
+- verificar erro da fonte quando taxa de setpoint é reduzida (aumentando sleep)
+    parece não depender da taxa
+    olhamos os índices das corretoras
+
 - testar PV SOFBMode-Sel
 
 - testar instalação do pru-serial485 pelo makefile (postergado)
