@@ -509,7 +509,7 @@ def plot_results(fname, title):
 
 def run():
     """."""
-    fname = 'lnlsfac-srv1-set-same-threads-mproc8-cserver-write-then-read-ethclient-remove-threads-50mil.txt'
+    fname = 'lnlsfac-srv1-set-same-threads-mproc8-pythonserver-write-then-read-ethclient-remove-threads-50mil.txt'
     # benchmark_bsmp_sofb_current_update()
     # benchmark_bsmp_sofb_current_setpoint(fname)
     benchmark_bsmp_sofb_current_setpoint_mp(fname)
