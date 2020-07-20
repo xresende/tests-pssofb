@@ -17,14 +17,14 @@ import matplotlib.gridspec as _mgs
 from matplotlib import rcParams
 
 import epics as _epics
-from PRUserial485 import EthBrigdeClient
+from PRUserial485 import EthBridgeClient
 
 from siriuspy.pwrsupply.pssofb import PSSOFB
 
 
 rcParams.update({
     'font.size': 14, 'lines.linewidth': 2, 'axes.grid': True})
-NRPTS = 50000
+NRPTS = 5000
 
 
 def define_priority():
@@ -42,7 +42,7 @@ def define_priority():
 
 def benchmark_bsmp_sofb_current_update():
     """."""
-    pssofb = PSSOFB(EthBrigdeClient)
+    pssofb = PSSOFB(EthBridgeClient)
     exectimes = [0] * NRPTS
     for i, _ in enumerate(exectimes):
         time0 = _time.time()
@@ -80,10 +80,10 @@ def benchmark_bsmp_sofb_current_update():
 def _run_subprocess_pssofb(pipe, bbbnames):
     """."""
     PSSOFB.BBBNAMES = bbbnames
-    pssofb = PSSOFB(EthBrigdeClient)
+    pssofb = PSSOFB(EthBridgeClient)
     pssofb.bsmp_slowref()
 
-    pssofb.bsmp_sofb_update()
+    pssofb.bsmp_update_sofb()
     curr_refmon = pssofb.sofb_current_refmon
     idcs = _np.sort(_np.hstack(list(pssofb.indcs_sofb.values())))
     pipe.send((idcs, curr_refmon[idcs]))
@@ -179,11 +179,11 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
 
 def benchmark_bsmp_sofb_current_setpoint(fname='test'):
     """."""
-    pssofb = PSSOFB(EthBrigdeClient)
+    pssofb = PSSOFB(EthBridgeClient)
     pssofb.bsmp_slowref()
     exectimes = [0] * NRPTS
 
-    pssofb.bsmp_sofb_update()
+    pssofb.bsmp_update_sofb()
     curr_refmon = pssofb.sofb_current_refmon
 
     curr_sp_prev = None
@@ -222,7 +222,7 @@ def benchmark_bsmp_sofb_current_setpoint(fname='test'):
 
 def benchmark_bsmp_sofb_current_setpoint_update():
     """."""
-    pssofb = PSSOFB(EthBrigdeClient)
+    pssofb = PSSOFB(EthBridgeClient)
     exectimes = [0] * NRPTS
     curr_sp = 0.1 * _np.random.randn(280)
     for i, _ in enumerate(exectimes):
@@ -254,10 +254,10 @@ def benchmark_bsmp_sofb_current_setpoint_update():
 
 def benchmark_bsmp_sofb_current_setpoint_then_update():
     """."""
-    pssofb = PSSOFB(EthBrigdeClient)
+    pssofb = PSSOFB(EthBridgeClient)
     exectimes = [0] * NRPTS
 
-    pssofb.bsmp_sofb_update()
+    pssofb.bsmp_update_sofb()
     curr_refmon = pssofb.sofb_current_refmon
 
     for i, _ in enumerate(exectimes):
@@ -270,7 +270,7 @@ def benchmark_bsmp_sofb_current_setpoint_then_update():
         pssofb.bsmp_sofb_current_set(curr_sp)
 
         # read from power supplies
-        pssofb.bsmp_sofb_update()
+        pssofb.bsmp_update_sofb()
         curr_rb = pssofb.sofb_current_rb
 
         # comparison
@@ -294,11 +294,11 @@ def benchmark_bsmp_sofb_current_setpoint_then_update():
 
 def benchmark_bsmp_sofb_kick_setpoint(fname='test'):
     """."""
-    pssofb = PSSOFB(EthBrigdeClient)
+    pssofb = PSSOFB(EthBridgeClient)
     pssofb.bsmp_slowref()
     exectimes = [0] * NRPTS
 
-    pssofb.bsmp_sofb_update()
+    pssofb.bsmp_update_sofb()
     kick_refmon = pssofb.sofb_kick_refmon
 
     curr_sp_prev = None
@@ -343,11 +343,11 @@ def benchmark_bsmp_sofb_kick_setpoint(fname='test'):
 
 def benchmark_bsmp_sofb_kick_setpoint_then_update():
     """."""
-    pssofb = PSSOFB(EthBrigdeClient)
+    pssofb = PSSOFB(EthBridgeClient)
     pssofb.bsmp_slowref()
     exectimes = [0] * NRPTS
 
-    pssofb.bsmp_sofb_update()
+    pssofb.bsmp_update_sofb()
     kick_refmon = pssofb.sofb_kick_refmon.copy()
 
     for i, _ in enumerate(exectimes):
@@ -360,7 +360,7 @@ def benchmark_bsmp_sofb_kick_setpoint_then_update():
         curr_sp = pssofb.bsmp_sofb_kick_set(kick_sp)
 
         # read from power supplies
-        pssofb.bsmp_sofb_update()
+        pssofb.bsmp_update_sofb()
         curr_rb = pssofb.sofb_current_rb
 
         # comparison
@@ -387,12 +387,12 @@ def benchmark_bsmp_sofb_kick_setpoint_delay(delay_before, delay_after):
     trigger = _epics.PV('AS-RaMO:TI-EVG:OrbSIExtTrig-Cmd')
     trigger.wait_for_connection()
 
-    pssofb = PSSOFB(EthBrigdeClient)
+    pssofb = PSSOFB(EthBridgeClient)
     pssofb.bsmp_slowrefsync()
 
     exectimes = [0] * 150
 
-    pssofb.bsmp_sofb_update()
+    pssofb.bsmp_update_sofb()
     kick_refmon = pssofb.sofb_kick_refmon
 
     for i, _ in enumerate(exectimes):
@@ -420,7 +420,7 @@ def benchmark_bsmp_sofb_kick_setpoint_delay(delay_before, delay_after):
         _time.sleep(delay_after)
 
         # read from power supplies
-        pssofb.bsmp_sofb_update()
+        pssofb.bsmp_update_sofb()
         curr_rb = pssofb.sofb_current_refmon
 
         # comparison
@@ -440,7 +440,7 @@ def benchmark_bsmp_sofb_kick_setpoint_delay(delay_before, delay_after):
 
 def bsmp_communication_test():
     """."""
-    pssofb = PSSOFB(EthBrigdeClient)
+    pssofb = PSSOFB(EthBridgeClient)
     time0 = _time.time()
     pssofb.bsmp_state_update()
     time1 = _time.time()
@@ -512,7 +512,7 @@ def plot_results(fname, title):
 
 def run():
     """."""
-    fname = 'lnlsfac-srv1-set-same-threads-mproc8-pythonserver-write-then-read-ethclient-remove-threads-sleep5ms-iocoff-50mil.txt'
+    fname = 'lnlsfac-srv1-set-same-threads-mproc8-pythonserver-write-then-read-ethclient-remove-threads-sleep5ms-iocoff-50mil-2.txt'
     # benchmark_bsmp_sofb_current_update()
     # benchmark_bsmp_sofb_current_setpoint(fname)
     benchmark_bsmp_sofb_current_setpoint_mp(fname)
