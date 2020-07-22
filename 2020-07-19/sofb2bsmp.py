@@ -1,1 +1,0 @@
-../sofb2bsmp.py
