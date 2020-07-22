@@ -2,14 +2,9 @@
 """."""
 
 import os as _os
-import sys as _sys
 import time as _time
 from multiprocessing import Pipe
 from copy import deepcopy as _dcopy
-
-from threading import Event
-
-from epics import CAProcess
 
 import numpy as _np
 import matplotlib.pyplot as _plt
@@ -17,14 +12,16 @@ import matplotlib.gridspec as _mgs
 from matplotlib import rcParams
 
 import epics as _epics
+from epics import CAProcess
+
 from PRUserial485 import EthBridgeClient
 
-from siriuspy.pwrsupply.pssofb import PSSOFB
+from siriuspy.pwrsupply.pssofb import PSSOFB, PSConnSOFB
 
 
 rcParams.update({
     'font.size': 14, 'lines.linewidth': 2, 'axes.grid': True})
-NRPTS = 5000
+NRPTS = 50000
 
 
 def define_priority():
@@ -40,13 +37,13 @@ def define_priority():
         print('Could not set priority')
 
 
-def benchmark_bsmp_sofb_current_update():
+def benchmark_psconnsofb_current_update():
     """."""
-    pssofb = PSSOFB(EthBridgeClient)
+    pssofb = PSConnSOFB(EthBridgeClient)
     exectimes = [0] * NRPTS
     for i, _ in enumerate(exectimes):
         time0 = _time.time()
-        pssofb.bsmp_sofb_current_update()
+        pssofb.bsmp_update_sofb()
         time1 = _time.time()
         exectimes[i] = 1000*(time1 - time0)
     for exectime in exectimes:
@@ -59,7 +56,7 @@ def benchmark_bsmp_sofb_current_update():
         time0 = _time.time()
 
         # read from power supplies
-        pssofb.bsmp_sofb_current_update()
+        pssofb.bsmp_update_sofb()
 
         # comparison
         issame = True
@@ -74,13 +71,12 @@ def benchmark_bsmp_sofb_current_update():
     for exectime in exectimes:
         print(exectime)
 
-    pssofb.stop_threads()
+    pssofb.threads_shutdown()
 
 
-def _run_subprocess_pssofb(pipe, bbbnames):
+def _run_subprocess_psconnsofb(pipe, bbbnames):
     """."""
-    PSSOFB.BBBNAMES = bbbnames
-    pssofb = PSSOFB(EthBridgeClient)
+    pssofb = PSConnSOFB(EthBridgeClient, bbbnames)
     pssofb.bsmp_slowref()
 
     pssofb.bsmp_update_sofb()
@@ -101,12 +97,11 @@ def _run_subprocess_pssofb(pipe, bbbnames):
     # restore state
     pssofb.bsmp_sofb_current_set(curr_refmon)
 
-    # pssofb.stop_threads()
+    pssofb.threads_shutdown()
 
 
-def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
+def benchmark_psconnsofb_current_setpoint_mp(fname='test'):
     """."""
-    # event = Event()
     bbbnames = _dcopy(PSSOFB.BBBNAMES)
     pipes = list()
     procs = list()
@@ -117,7 +112,7 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
         mine, theirs = Pipe()
         pipes.append(mine)
         proc = CAProcess(
-            target=_run_subprocess_pssofb, args=(theirs, bbbnames[slc]),
+            target=_run_subprocess_psconnsofb, args=(theirs, bbbnames[slc]),
             daemon=True)
         procs.append(proc)
         proc.start()
@@ -151,7 +146,6 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
         exectimes[i] = 1000*(time1 - time0)
 
         _time.sleep(0.005)
-        # event.wait(0.005)
 
         # compare readback_ref read with previous value set
         if curr_sp_prev is not None:
@@ -167,7 +161,6 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
             sel = (~_np.isclose(diff, 0, atol=1e-4)).nonzero()[0]
             print('SP<>RB in event {} {}'.format(i, sel))
 
-
     for pipe in pipes:
         pipe.send(None)
 
@@ -177,9 +170,9 @@ def benchmark_bsmp_sofb_current_setpoint_mp(fname='test'):
     _np.savetxt(fname, exectimes)
 
 
-def benchmark_bsmp_sofb_current_setpoint(fname='test'):
+def benchmark_psconnsofb_current_setpoint(fname='test'):
     """."""
-    pssofb = PSSOFB(EthBridgeClient)
+    pssofb = PSConnSOFB(EthBridgeClient)
     pssofb.bsmp_slowref()
     exectimes = [0] * NRPTS
 
@@ -200,10 +193,13 @@ def benchmark_bsmp_sofb_current_setpoint(fname='test'):
         time1 = _time.time()
         exectimes[i] = 1000*(time1 - time0)
 
+        _time.sleep(0.005)
+
         # compare readback_ref read with previous value set
         if curr_sp_prev is not None:
-            curr_read = pssofb.sofb_current_readback_ref.copy()
+            curr_read = pssofb.sofb_current_readback_ref
             issame = pssofb.sofb_vector_issame(curr_read, curr_sp_prev)
+            diff = curr_read - curr_sp_prev
         else:
             issame = True
 
@@ -211,18 +207,67 @@ def benchmark_bsmp_sofb_current_setpoint(fname='test'):
         curr_sp_prev = curr_sp
 
         if not issame:
-            print('SP<>RB in event {}'.format(i))
+            sel = (~_np.isclose(diff, 0, atol=1e-4)).nonzero()[0]
+            print('SP<>RB in event {} {}'.format(i, sel))
 
     # restore state
     pssofb.bsmp_sofb_current_set(curr_refmon)
 
     _np.savetxt(fname, exectimes)
-    pssofb.stop_threads()
+    pssofb.threads_shutdown()
 
 
-def benchmark_bsmp_sofb_current_setpoint_update():
+def benchmark_pssofb_current_setpoint(fname='test'):
     """."""
     pssofb = PSSOFB(EthBridgeClient)
+    pssofb.processes_start()
+    pssofb.bsmp_slowref()
+    exectimes = [0] * NRPTS
+
+    pssofb.bsmp_update_sofb()
+    curr_refmon = pssofb.sofb_current_refmon
+
+    curr_sp_prev = None
+    for i, _ in enumerate(exectimes):
+
+        # start clock
+        time0 = _time.time()
+
+        # set current values
+        curr_sp = curr_refmon + 1 * 0.01 * _np.random.randn(curr_refmon.size)
+        pssofb.bsmp_sofb_current_set(curr_sp)
+
+        # stop clock
+        time1 = _time.time()
+        exectimes[i] = 1000*(time1 - time0)
+
+        _time.sleep(0.005)
+
+        # compare readback_ref read with previous value set
+        if curr_sp_prev is not None:
+            curr_read = pssofb.sofb_current_readback_ref
+            issame = pssofb.sofb_vector_issame(curr_read, curr_sp_prev)
+            diff = curr_read - curr_sp_prev
+        else:
+            issame = True
+
+        # update curr_sp_prev for comparison in the next iteration
+        curr_sp_prev = curr_sp
+
+        if not issame:
+            sel = (~_np.isclose(diff, 0, atol=1e-4)).nonzero()[0]
+            print('SP<>RB in event {} {}'.format(i, sel))
+
+    # restore state
+    pssofb.bsmp_sofb_current_set(curr_refmon)
+
+    _np.savetxt(fname, exectimes)
+    pssofb.processes_shutdown()
+
+
+def benchmark_psconnsofb_current_setpoint_update():
+    """."""
+    pssofb = PSConnSOFB(EthBridgeClient)
     exectimes = [0] * NRPTS
     curr_sp = 0.1 * _np.random.randn(280)
     for i, _ in enumerate(exectimes):
@@ -233,7 +278,6 @@ def benchmark_bsmp_sofb_current_setpoint_update():
         # set current values
         pssofb.bsmp_sofb_current_set_update(curr_sp)
 
-        # read from power supplies
         curr_rb = pssofb.sofb_current_rb
 
         # comparison
@@ -249,12 +293,12 @@ def benchmark_bsmp_sofb_current_setpoint_update():
     for exectime in exectimes:
         print(exectime)
 
-    pssofb.stop_threads()
+    pssofb.threads_shutdown()
 
 
-def benchmark_bsmp_sofb_current_setpoint_then_update():
+def benchmark_psconnsofb_current_setpoint_then_update():
     """."""
-    pssofb = PSSOFB(EthBridgeClient)
+    pssofb = PSConnSOFB(EthBridgeClient)
     exectimes = [0] * NRPTS
 
     pssofb.bsmp_update_sofb()
@@ -289,12 +333,12 @@ def benchmark_bsmp_sofb_current_setpoint_then_update():
     for exectime in exectimes:
         print(exectime)
 
-    pssofb.stop_threads()
+    pssofb.threads_shutdown()
 
 
-def benchmark_bsmp_sofb_kick_setpoint(fname='test'):
+def benchmark_psconnsofb_kick_setpoint(fname='test'):
     """."""
-    pssofb = PSSOFB(EthBridgeClient)
+    pssofb = PSConnSOFB(EthBridgeClient)
     pssofb.bsmp_slowref()
     exectimes = [0] * NRPTS
 
@@ -338,12 +382,57 @@ def benchmark_bsmp_sofb_kick_setpoint(fname='test'):
     pssofb.bsmp_sofb_kick_set(kick_refmon)
 
     _np.savetxt(fname, exectimes)
-    pssofb.stop_threads()
+    pssofb.threads_shutdown()
 
 
-def benchmark_bsmp_sofb_kick_setpoint_then_update():
+def benchmark_pssofb_kick_setpoint(fname='test'):
     """."""
     pssofb = PSSOFB(EthBridgeClient)
+    pssofb.processes_start()
+    pssofb.bsmp_slowref()
+    exectimes = [0] * NRPTS
+
+    pssofb.bsmp_update_sofb()
+    kick_refmon = pssofb.sofb_kick_refmon
+
+    kick_sp_prev = None
+    for i, _ in enumerate(exectimes):
+
+        # print(i)
+        # start clock
+        time0 = _time.time()
+
+        # set kick values
+        kick_sp = kick_refmon + 0 * 0.01 * _np.random.randn(len(kick_refmon))
+        pssofb.bsmp_sofb_kick_set(kick_sp)
+
+        # stop clock
+        time1 = _time.time()
+        exectimes[i] = 1000*(time1 - time0)
+
+        # compare readback_ref read with previous value set
+        if kick_sp_prev is not None:
+            kick_read = pssofb.sofb_kick_readback_ref
+            issame = pssofb.sofb_vector_issame(kick_read, kick_sp_prev)
+        else:
+            issame = True
+
+        # update kick_sp_prev for comparison in the next iteration
+        kick_sp_prev = kick_sp
+
+        if not issame:
+            print('SP<>RB in event {}'.format(i))
+
+    # restore state
+    pssofb.bsmp_sofb_kick_set(kick_refmon)
+
+    _np.savetxt(fname, exectimes)
+    pssofb.processes_shutdown()
+
+
+def benchmark_psconnsofb_kick_setpoint_then_update():
+    """."""
+    pssofb = PSConnSOFB(EthBridgeClient)
     pssofb.bsmp_slowref()
     exectimes = [0] * NRPTS
 
@@ -379,15 +468,15 @@ def benchmark_bsmp_sofb_kick_setpoint_then_update():
     for exectime in exectimes:
         print(exectime)
 
-    pssofb.stop_threads()
+    pssofb.threads_shutdown()
 
 
-def benchmark_bsmp_sofb_kick_setpoint_delay(delay_before, delay_after):
+def benchmark_psconnsofb_kick_setpoint_delay(delay_before, delay_after):
     """."""
     trigger = _epics.PV('AS-RaMO:TI-EVG:OrbSIExtTrig-Cmd')
     trigger.wait_for_connection()
 
-    pssofb = PSSOFB(EthBridgeClient)
+    pssofb = PSConnSOFB(EthBridgeClient)
     pssofb.bsmp_slowrefsync()
 
     exectimes = [0] * 150
@@ -435,14 +524,14 @@ def benchmark_bsmp_sofb_kick_setpoint_delay(delay_before, delay_after):
     for exectime in exectimes:
         print(exectime)
 
-    pssofb.stop_threads()
+    pssofb.threads_shutdown()
 
 
 def bsmp_communication_test():
     """."""
-    pssofb = PSSOFB(EthBridgeClient)
+    pssofb = PSConnSOFB(EthBridgeClient)
     time0 = _time.time()
-    pssofb.bsmp_state_update()
+    pssofb.bsmp_update_state()
     time1 = _time.time()
     print(1e3*(time1 - time0))
 
@@ -512,20 +601,25 @@ def plot_results(fname, title):
 
 def run():
     """."""
-    fname = 'lnlsfac-srv1-set-same-threads-mproc8-pythonserver-write-then-read-ethclient-remove-threads-sleep5ms-iocoff-50mil-2.txt'
-    # benchmark_bsmp_sofb_current_update()
-    # benchmark_bsmp_sofb_current_setpoint(fname)
-    benchmark_bsmp_sofb_current_setpoint_mp(fname)
-    # benchmark_bsmp_sofb_current_setpoint_update()
-    # benchmark_bsmp_sofb_current_setpoint_then_update()
+    fname = 'lnlsfac-srv1-pssofb-mproc8-sleep5ms-iocoff-alliocsoff-50mil.txt'
+    
+    # benchmark_psconnsofb_current_setpoint_mp(fname)
+    # benchmark_psconnsofb_current_setpoint(fname)
+    benchmark_pssofb_current_setpoint(fname)
 
-    # benchmark_bsmp_sofb_kick_setpoint()
-    # benchmark_bsmp_sofb_kick_setpoint_then_update()
+    # benchmark_psconnsofb_kick_setpoint()
+    # benchmark_pssofb_kick_setpoint()
+
+    # benchmark_psconnsofb_current_update()
+    # benchmark_psconnsofb_current_setpoint_update()
+    # benchmark_psconnsofb_current_setpoint_then_update()
+    # benchmark_psconnsofb_kick_setpoint_then_update()
     # sleep_trigger_before = float(_sys.argv[1])
     # sleep_trigger_after = float(_sys.argv[2])
-    # benchmark_bsmp_sofb_kick_setpoint_delay(
+    # benchmark_psconnsofb_kick_setpoint_delay(
     #     sleep_trigger_before, sleep_trigger_after)
     # test_methods()
+
     plot_results(fname, fname.split('.')[0])
 
 
